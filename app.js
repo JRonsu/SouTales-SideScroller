@@ -43,22 +43,6 @@ backgroundImage.onload = function() {
   requestAnimationFrame(update);
 };
 
-function update() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // Show the next screen if the background image limit is met
-  if (backgroundX <= -limit) {
-    ctx.fillStyle = "red";
-    ctx.font = "48px sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Congratulations! You've reached the end!", canvas.width / 2, canvas.height / 2);
-  } else {
-    ctx.drawImage(backgroundImage, backgroundX, 0);
-  }
-
-  requestAnimationFrame(update);
-}
-
 // load sprite sheet // only do sprite animation when keys are pressed
 const playerImage = new Image();
 playerImage.src = "./images/Run.png";
@@ -70,6 +54,7 @@ const playerWidth = 70;
 const playerHeight = 500 / 5;
 const playerX = 0;
 const playerY = 365;
+
 
 function update() {
   tickCount += 1;
@@ -92,6 +77,26 @@ function update() {
   const endImage = new Image();
   endImage.src = "./images/sinisterr level1 map.png";
 
+  // Load next image
+  let battle1Image = new Image();
+  battle1Image.src = "./images/Battle1.png";
+
+  let displayImage = endImage;
+
+  function draw() {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw the current display image
+    ctx.drawImage(displayImage, 0, 0, canvas.width, canvas.height);
+  }
+
+  setTimeout(function() {
+    displayImage = battle1Image;
+    draw();
+  }, 10000);
+
+  //background limit
   if (backgroundX <= -limit) {
   ctx.drawImage(endImage, canvas.width / 2 - endImage.width / 2, canvas.height / 2 - endImage.height / 2);
   } else {
