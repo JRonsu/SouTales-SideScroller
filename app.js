@@ -106,9 +106,17 @@ function update() {
   let quickAttackButton = document.getElementById("quick-attack-button");
   let heavyAttackButton = document.getElementById("heavy-attack-button");
   let healButton = document.getElementById("heal-button");
+  let playerHealthDisplay = document.getElementById("player-health");
+  let playerManaDisplay = document.getElementById("player-mana");
+  let healthbarcontainer = document.getElementById("health-bar-container");
+  let healthBar = document.getElementById("health-bar");
+  healthbarcontainer.style.display = "none";
+  healthBar.style.display = "none";
   quickAttackButton.style.display = "none";
   heavyAttackButton.style.display = "none";
   healButton.style.display = "none";
+  playerHealthDisplay.style.display = "none";
+  playerManaDisplay.style.display = "none";
 
   
   
@@ -130,6 +138,10 @@ function update() {
     quickAttackButton.style.display = "inline-block";
     heavyAttackButton.style.display = "inline-block";
     healButton.style.display = "inline-block";
+    playerHealthDisplay.style.display = "inline-block";
+    playerManaDisplay.style.display = "inline-block";
+    healthbarcontainer.style.display = "inline-block";
+    healthBar.style.display = "inline-block";
     //startBattle();
     //change scene 
   }, 10000);
@@ -223,6 +235,8 @@ class EnemyBoss1 {
 const quickAttackButton = document.getElementById("quick-attack-button");
 const heavyAttackButton = document.getElementById("heavy-attack-button");
 const healButton = document.getElementById("heal-button");
+const healthBar = document.getElementById("health-bar");
+
 
 function attack(player, enemy, attackType) {
   if (attackType === "quick") {
@@ -239,6 +253,8 @@ function attack(player, enemy, attackType) {
 
   if (enemy.health <= 0) {
     console.log("Enemy defeated! Player wins.");
+    canvas.style.backgroundColor = "black";
+    alert("Player wins! Congratulations!");
     return;
   }
 
@@ -253,8 +269,11 @@ function attack(player, enemy, attackType) {
 
   if (player.health <= 0) {
     console.log("Player defeated! Enemy wins.");
+    canvas.style.backgroundColor = "black";
+    alert("Player Has Died");
   } else {
     console.log(`Player health: ${player.health}`);
+    updateHealthBar(player.health);
   }
 
   console.log(`Enemy health: ${enemy.health}`);
@@ -265,6 +284,7 @@ function heal(player) {
   player.health += 10;
   
   console.log(`Player healed! Player health: ${player.health}`);
+  updateHealthBar(player.health);
 }
 
 healButton.addEventListener("click", function() {
@@ -274,13 +294,34 @@ healButton.addEventListener("click", function() {
 
 const player = new Player1();
 const enemy = new EnemyBoss1();
+const playerHealthDisplay = document.getElementById("player-health");
+const playerManaDisplay = document.getElementById("player-mana");
 
+function updatePlayerDisplay() {
+  playerHealthDisplay.textContent = `Health: ${player.health}`;
+  playerManaDisplay.textContent = `Mana: ${player.mana}`;
+}
+
+// Call updatePlayerDisplay after each attack or heal
 quickAttackButton.addEventListener("click", function() {
-  console.log("Player used quick attack.");
   attack(player, enemy, "quick");
+  updatePlayerDisplay();
 });
 
 heavyAttackButton.addEventListener("click", function() {
-  console.log("Player used heavy attack.");
   attack(player, enemy, "heavy");
+  updatePlayerDisplay();
 });
+
+healButton.addEventListener("click", function() {
+  heal(player);
+  updatePlayerDisplay();
+});
+
+
+function updateHealthBar(health) {
+  healthBar.style.width = `${health}%`;
+}
+
+updateHealthBar(player.health);
+
