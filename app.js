@@ -2,11 +2,11 @@ const instructionsButton = document.getElementById("instructions-button");
 
 instructionsButton.addEventListener("click", function() {
   alert(
-    "1. Choose your attack type by clicking either the Quick Attack or Heavy Attack button.\n" +
-      "2. Quick Attack costs no mana and deals 10 damage.\n" +
-      "3. Heavy Attack costs 4 mana and deals 20 damage.\n" +
-      "4. The enemy's health will decrease based on the attack type chosen.\n" +
-      "5. The game ends when the enemy's health reaches 0."
+    "Welcome to Sou Tales Side Scroller Game\n" +
+    "1. you can navigate the game using A and D keys\n" +
+      "2. A <--- Directions ---> D\n" +
+      "The goal of the game is to battle your way through levels of enemies " +
+      "and defeat the bosses in each stage"
   );
 });
 
@@ -200,15 +200,13 @@ playerImage.onload = function() {
 //Character / Enemy Stats
 // Player1 object
 class Player1 {
-  constructor(health, damage,mana) {
+  constructor(health, damage, mana) {
     this.health = 100;
     this.damage = 10;
-    this.mana = 12;
+    this.mana = 20;
   }
 }
 
-
-// EnemyBoss1 object
 class EnemyBoss1 {
   constructor(health, damage,mana) {
     this.health = 100;
@@ -230,23 +228,42 @@ function attack(player, enemy, attackType) {
       player.mana -= 4;
     } else {
       console.log("Not enough mana to use heavy attack!");
+      return;
     }
   }
 
   if (enemy.health <= 0) {
     console.log("Enemy defeated! Player wins.");
-  } else {
-    console.log(`Enemy health: ${enemy.health}`);
+    return;
   }
+
+  if (enemy.mana >= 6) {
+    player.health -= enemy.damage * 3;
+    enemy.mana -= 6;
+    console.log(`Enemy used magic fireball and dealt ${enemy.damage * 3} damage.`);
+  } else {
+    player.health -= enemy.damage;
+    console.log(`Enemy used normal attack and dealt ${enemy.damage} damage.`);
+  }
+
+  if (player.health <= 0) {
+    console.log("Player defeated! Enemy wins.");
+  } else {
+    console.log(`Player health: ${player.health}`);
+  }
+
+  console.log(`Enemy health: ${enemy.health}`);
 }
 
 const player = new Player1();
 const enemy = new EnemyBoss1();
 
 quickAttackButton.addEventListener("click", function() {
+  console.log("Player used quick attack.");
   attack(player, enemy, "quick");
 });
 
 heavyAttackButton.addEventListener("click", function() {
+  console.log("Player used heavy attack.");
   attack(player, enemy, "heavy");
 });
