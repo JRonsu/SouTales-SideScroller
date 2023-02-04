@@ -1,3 +1,15 @@
+const instructionsButton = document.getElementById("instructions-button");
+
+instructionsButton.addEventListener("click", function() {
+  alert(
+    "1. Choose your attack type by clicking either the Quick Attack or Heavy Attack button.\n" +
+      "2. Quick Attack costs no mana and deals 10 damage.\n" +
+      "3. Heavy Attack costs 4 mana and deals 20 damage.\n" +
+      "4. The enemy's health will decrease based on the attack type chosen.\n" +
+      "5. The game ends when the enemy's health reaches 0."
+  );
+});
+
 
 const canvas = document.getElementById("game-canvas");
 canvas.width = 805;
@@ -36,12 +48,19 @@ document.addEventListener("keyup", function(event) {
       break;
   }
 });
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 // update loop
 backgroundImage.onload = function() {
   ctx.drawImage(backgroundImage, backgroundX, 0);
   requestAnimationFrame(update);
 };
+
 
 // load sprite sheet // only do sprite animation when keys are pressed
 const playerImage = new Image();
@@ -77,12 +96,21 @@ function update() {
   const endImage = new Image();
   endImage.src = "./images/sinisterr level1 map.png";
 
+  let level2Image = new Image();
+  level2Image.src = "./images/Level2 map.png"
+
   // Load next image
   let battle1Image = new Image();
   battle1Image.src = "./images/Battle1.png";
-
+  //hide buttons
+  let quickAttackButton = document.getElementById("quick-attack-button");
+  let heavyAttackButton = document.getElementById("heavy-attack-button");
+  quickAttackButton.style.display = "none";
+  heavyAttackButton.style.display = "none";
+  
+  
   let displayImage = endImage;
-
+  // here
   function draw() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -92,9 +120,18 @@ function update() {
   }
 
   setTimeout(function() {
+    //show battle image
     displayImage = battle1Image;
     draw();
+    //show buttos
+    quickAttackButton.style.display = "inline-block";
+    heavyAttackButton.style.display = "inline-block";
+    //startBattle();
+    //change scene 
   }, 10000);
+
+  //call battle
+  //startBattle(Player1, EnemyBoss1);
 
   //background limit
   if (backgroundX <= -limit) {
@@ -160,3 +197,56 @@ playerImage.onload = function() {
 
 }
 
+//Character / Enemy Stats
+// Player1 object
+class Player1 {
+  constructor(health, damage,mana) {
+    this.health = 100;
+    this.damage = 10;
+    this.mana = 12;
+  }
+}
+
+
+// EnemyBoss1 object
+class EnemyBoss1 {
+  constructor(health, damage,mana) {
+    this.health = 100;
+    this.damage = 10;
+    this.mana = 12;
+  }
+}
+
+
+const quickAttackButton = document.getElementById("quick-attack-button");
+const heavyAttackButton = document.getElementById("heavy-attack-button");
+
+function attack(player, enemy, attackType) {
+  if (attackType === "quick") {
+    enemy.health -= player.damage;
+  } else if (attackType === "heavy") {
+    if (player.mana >= 4) {
+      enemy.health -= player.damage * 2;
+      player.mana -= 4;
+    } else {
+      console.log("Not enough mana to use heavy attack!");
+    }
+  }
+
+  if (enemy.health <= 0) {
+    console.log("Enemy defeated! Player wins.");
+  } else {
+    console.log(`Enemy health: ${enemy.health}`);
+  }
+}
+
+const player = new Player1();
+const enemy = new EnemyBoss1();
+
+quickAttackButton.addEventListener("click", function() {
+  attack(player, enemy, "quick");
+});
+
+heavyAttackButton.addEventListener("click", function() {
+  attack(player, enemy, "heavy");
+});

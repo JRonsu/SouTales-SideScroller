@@ -1,4 +1,22 @@
 body {
     background-color: black;
   }
+
+#instructions-button {
+  position: absolute;
+  top: 620px;
+  left: 370px;
   
+}
+  
+#quick-attack-button {
+    position: absolute;
+    top: 530px;
+    left: 480px;
+    }
+
+#heavy-attack-button {
+      position: absolute;
+      top: 570px;
+      left: 480px;
+      }
