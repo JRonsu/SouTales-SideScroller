@@ -13,10 +13,17 @@ body {
     position: absolute;
     top: 530px;
     left: 480px;
-    }
+}
 
 #heavy-attack-button {
-      position: absolute;
-      top: 570px;
-      left: 480px;
-      }
+  position: absolute;
+  top: 570px;
+  left: 480px;
+}
+
+#heal-button {
+  position: absolute;
+  top: 530px;
+  left: 680px;
+}
+

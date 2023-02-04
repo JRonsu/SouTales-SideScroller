@@ -105,8 +105,11 @@ function update() {
   //hide buttons
   let quickAttackButton = document.getElementById("quick-attack-button");
   let heavyAttackButton = document.getElementById("heavy-attack-button");
+  let healButton = document.getElementById("heal-button");
   quickAttackButton.style.display = "none";
   heavyAttackButton.style.display = "none";
+  healButton.style.display = "none";
+
   
   
   let displayImage = endImage;
@@ -126,6 +129,7 @@ function update() {
     //show buttos
     quickAttackButton.style.display = "inline-block";
     heavyAttackButton.style.display = "inline-block";
+    healButton.style.display = "inline-block";
     //startBattle();
     //change scene 
   }, 10000);
@@ -218,6 +222,7 @@ class EnemyBoss1 {
 
 const quickAttackButton = document.getElementById("quick-attack-button");
 const heavyAttackButton = document.getElementById("heavy-attack-button");
+const healButton = document.getElementById("heal-button");
 
 function attack(player, enemy, attackType) {
   if (attackType === "quick") {
@@ -254,6 +259,18 @@ function attack(player, enemy, attackType) {
 
   console.log(`Enemy health: ${enemy.health}`);
 }
+
+//heal mechanic
+function heal(player) {
+  player.health += 10;
+  
+  console.log(`Player healed! Player health: ${player.health}`);
+}
+
+healButton.addEventListener("click", function() {
+  heal(player);
+});
+
 
 const player = new Player1();
 const enemy = new EnemyBoss1();
